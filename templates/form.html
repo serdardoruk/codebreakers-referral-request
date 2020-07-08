@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class = "jumbotron">
+<p>Please fill out the form below!</p>
+	<form method="POST"  enctype="multipart/form-data">
+		{{ form.hidden_tag() }}
+		{{ form.name.label }} {{ form.name() }}
+		<p></p>
+		{{ form.hidden_tag() }}
+		{{ form.lastname.label }} {{ form.lastname() }}
+		<p></p>
+		{{ form.hidden_tag() }}
+		{{ form.company.label }} {{ form.company() }}
+		<p></p>
+		{{ form.hidden_tag() }}
+		{{ form.resume.label }} {{ form.resume() }}
+
+
+		{{ form.submit() }}
+
+
+	</form>
+
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+

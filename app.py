@@ -72,6 +72,14 @@ def needsImprovement(id):
 	db.session.commit()
 	return redirect(url_for("list_referrals"))
 
+@app.route('/deleteRequest/<string:id>', methods = ["GET"])
+def deleteRequest(id):
+	refer = Refer.query.filter_by(id=id).first()
+	db.session.delete(refer)
+	db.session.commit()
+	return redirect(url_for("list_referrals"))
+
+
 @app.route('/form', methods=['GET','POST'])
 def form():
 	name = False

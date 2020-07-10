@@ -14,10 +14,13 @@
 		  <th scope="col">Thumbs UP</th>
 		  <th scope="col">Thumpbs Down</th>
 		  <th scope="col">Score</th>
+			<th scope="col">Delete Request</th>
+
 		</tr>
 	  </thead>
 	  <tbody>
 	  	{% for ref in refers %}
+		<tr>
 	  		<th scope="row">{{ref.id}}</th>
 			<td>{{ref.name}}</td>
 			<td>{{ref.lastname}}</td>
@@ -26,7 +29,8 @@
 			<td><a href="/looksGood/{{ref.id}}" class = "btn btn-success">Looks Good</a></td>
 			<td><a href="/needsImprovement/{{ref.id}}" class = "btn btn-danger">Needs Improvement</a></td>
 			<td>{{ref.score}}</td>
-
+			<td><a href="/deleteRequest/{{ref.id}}" class = "btn btn-danger">Delete</a></td>
+		</tr>
 	  	{% endfor %}
 
 	  </tbody>

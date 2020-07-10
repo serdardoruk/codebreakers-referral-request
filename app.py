@@ -6,6 +6,7 @@ from flask_wtf.file import FileField, FileRequired
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import webbrowser
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -26,28 +27,50 @@ class Refer(db.Model):
 	name = db.Column(db.Text)
 	lastname = db.Column(db.Text)
 	company = db.Column(db.Text)
-	resume = db.Column(db.LargeBinary)
+	resume = db.Column(db.Text)
+	score = db.Column(db.Integer)
 
-	def __init__(self, name, lastname, company, resume):
+
+	def __init__(self, name, lastname, company, resume, score):
 		self.name = name
 		self.lastname = lastname
 		self.company = company
 		self.resume = resume
+		self.score = score
+
 
 	def __repr__(self):
 		return f"{self.name} requested referral for {self.company}"
+
+	def goToResume(self, url):
+		url = self.resume
+		webbrowser.open(url)
+		return
 
 class InfoForm(FlaskForm):
 	name = StringField("Name?")
 	lastname = StringField("Last name?")
 	company = StringField("Company")
-	resume = FileField(validators=[FileRequired()])
+	resume = StringField("Resume Link")
 	submit = SubmitField("Submit")
 
 @app.route('/')
 def index():
 	return render_template("index.html")
 
+@app.route('/looksGood/<string:id>', methods = ["GET"])
+def looksGood(id):
+	refer = Refer.query.filter_by(id=id).first()
+	refer.score += 1
+	db.session.commit()
+	return redirect(url_for("list_referrals"))
+
+@app.route('/needsImprovement/<string:id>', methods = ["GET"])
+def needsImprovement(id):
+	refer = Refer.query.filter_by(id=id).first()
+	refer.score -= 1
+	db.session.commit()
+	return redirect(url_for("list_referrals"))
 
 @app.route('/form', methods=['GET','POST'])
 def form():
@@ -62,7 +85,7 @@ def form():
 		company = form.company.data
 		resume = form.resume.data
 
-		newReferral = Refer(name, lastname, company, resume.read())
+		newReferral = Refer(name, lastname, company, resume, 0)
 		db.session.add(newReferral)
 		db.session.commit()
 

@@ -3,17 +3,36 @@
 {% block content %}
 
 <div class = "jumbotron">
-	<h1>Here is a list of all referral requests</h1>
-	<u1>
-		{% for ref in refers %}
-		<li>{{ref}}</li>
-		{% endfor %}
-	</u1>
+	<table class="table">
+	  <thead>
+		<tr>
+		  <th scope="col">Id</th>
+		  <th scope="col">First</th>
+		  <th scope="col">Last</th>
+		  <th scope="col">Company</th>
+			<th scope="col">Resume URL</th>
+		  <th scope="col">Thumbs UP</th>
+		  <th scope="col">Thumpbs Down</th>
+		  <th scope="col">Score</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	  	{% for ref in refers %}
+	  		<th scope="row">{{ref.id}}</th>
+			<td>{{ref.name}}</td>
+			<td>{{ref.lastname}}</td>
+			<td>{{ref.company}}</td>
+			<td><a href="{{ref.resume}}" class = "btn btn-primary">Resume</a></td>
+			<td><a href="/looksGood/{{ref.id}}" class = "btn btn-success">Looks Good</a></td>
+			<td><a href="/needsImprovement/{{ref.id}}" class = "btn btn-danger">Needs Improvement</a></td>
+			<td>{{ref.score}}</td>
 
-</div>
+	  	{% endfor %}
 
+	  </tbody>
+	</table>
 
-
+	</div>
 
 {% endblock %}
 
